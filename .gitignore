@@ -1,0 +1,4 @@
+# Build output (the MiniGL library build scripts write here)
+/build_output*/
+/ioquake3_objs*/
+*.o
