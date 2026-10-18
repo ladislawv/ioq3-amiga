@@ -27,6 +27,35 @@ Changes in this version (build 296, October 2026):
 - Further fixes noted in the sources with their dates (renderer depth state,
   menu surfaces, polygon offset, bots at `-O0` for `be_ai_char.c`).
 
+## The OpenGL ES 2.0 build (ogles2)
+
+Besides the MiniGL build, this tree builds Quake III with **ioquake3's
+modern renderer, `renderergl2`**, on [ogles2.library](https://github.com/ladislawv/ogles2)
+(OpenGL ES 2.0 on the PiStorm's V3D): per-pixel shaders, and about 30% faster
+than MiniGL (timedemo `four`, 640x480, A1200 with a Pi 4: 80.4 against 61.3 fps).
+
+- `code/renderergl2/`, `code/renderercommon/`, `code/qcommon/json.h`: upstream
+  ioquake3 at commit `83a7762`, with two changes in `renderergl2`: normal and
+  specular mapping off by default (Quake III's data has no such maps), and a
+  progress bar while shaders compile on the Amiga.
+- `code/amiga-gl2/`: the glimp (`amiga_glimp_gl2.c`: the ogles2 context, the
+  32-bit RTG screen modes, the mouse pointer), the adapter between the
+  engine's and upstream's renderer interfaces (`ioq3_gl2_ref.c`), a
+  compatibility header, the GL headers (types and constants only), the
+  generator of the GLES2 glue (`gen_glue.py`), and the package's ReadMe and
+  start script.
+- `build_ioq3_ogles2_wsl.sh`: builds `build_ogles2/quake3-gl2` and the three
+  game modules. Needs bebbo's amiga-gcc 6.5 with clib2 and the ogles2 SDK
+  (`OGLES2_SDK`, from ogles2's releases).
+- `package_ioq3_ogles2_wsl.sh`: makes the user package `Quake3-GLES2-<build>.lha`
+  (the game, `libs/ogles2.library`, the shader compiler `libs/v3dglslc`, the
+  renderer's compiled shaders in `shaders/`, ReadMe, licences).
+
+The renderer compiles 109 GLSL programs; their compiled form depends on the
+screen size. The package ships them for 640x480 and 1920x1080; other modes
+compile once at their first start (about 90 to 110 s) with the compiler in
+`libs/`.
+
 ## Building
 
 The build scripts expect GCC 6.5.0b (bebbo's amiga-gcc) with clib2 and the

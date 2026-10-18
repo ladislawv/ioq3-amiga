@@ -2,3 +2,6 @@
 /build_output*/
 /ioquake3_objs*/
 *.o
+
+# The OpenGL ES 2.0 build (build_ioq3_ogles2_wsl.sh) writes here
+/build_ogles2/

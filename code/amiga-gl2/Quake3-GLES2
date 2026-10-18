@@ -1,0 +1,19 @@
+.key MODE/K,VSYNC/S
+.def MODE 3
+.bra {
+.ket }
+; Quake III Arena with the OpenGL ES 2.0 renderer, full screen.
+;   Execute Quake3-GLES2            640 x 480
+;   Execute Quake3-GLES2 MODE=-1    the size set in the video menu (r_customwidth/height)
+;   Execute Quake3-GLES2 VSYNC      no tearing, at most the display's rate
+; Run it in the Quake III Arena directory (the one with baseq3/).
+FailAt 21
+If NOT EXISTS baseq3/pak0.pk3
+  Echo "Run this in the Quake III Arena directory (the one with baseq3/pak0.pk3)."
+  Quit 20
+EndIf
+If "{VSYNC}" EQ ""
+  quake3-gl2 +set r_fullscreen 1 +set r_mode {MODE} +set r_swapInterval 0
+Else
+  quake3-gl2 +set r_fullscreen 1 +set r_mode {MODE} +set r_swapInterval 1
+EndIf
