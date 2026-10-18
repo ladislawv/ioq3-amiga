@@ -7,8 +7,12 @@
 #   ReadMe-GLES2.txt, COPYING.txt, licences/
 # In Linux or WSL, after the build:
 #
-#   OGLES2_RELEASE=/path/to/ogles2 SHADERS=/path/to/shaders bash package_ioq3_ogles2_wsl.sh [VERSION]
+#   OGLES2_RELEASE=/path/to/ogles2 SHADERS=/path/to/shaders bash package_ioq3_ogles2_wsl.sh [VERSION] [dist]
 #
+# dist: also copies the package into release/ (with SHA256SUMS), the copy
+# kept in the repository for those who clone it. Only when a build is
+# released, not for every test build: each copy is another 7 MB in the
+# history.
 # OGLES2_RELEASE: an unpacked ogles2 user archive (ogles2-1.3.lha from
 # github.com/ladislawv/ogles2/releases: Libs/, LICENSE, licences/).
 # OGLES2_LIB: a different ogles2.library to ship (default: the release's).
@@ -19,6 +23,7 @@
 set -eu
 HERE=$(cd "$(dirname "$0")" && pwd)
 VERSION=${1:-296}
+DIST=${2:-}
 REL=${OGLES2_RELEASE:?set OGLES2_RELEASE to an unpacked ogles2 user archive}
 SH=${SHADERS:?set SHADERS to the drawer of compiled shaders}
 LIB=${OGLES2_LIB:-$REL/Libs/ogles2.library}
@@ -49,3 +54,10 @@ cp -r "$REL/licences/." "$P/licences/ogles2/"
 ls -l "$OUT/Quake3-GLES2-$VERSION.lha"
 (cd "$OUT" && sha256sum "Quake3-GLES2-$VERSION.lha")
 echo "$(ls "$P/shaders" | wc -l) files in shaders/"
+if [ "$DIST" = dist ]; then
+    mkdir -p "$HERE/release"
+    rm -f "$HERE"/release/Quake3-GLES2-*.lha
+    cp "$OUT/Quake3-GLES2-$VERSION.lha" "$HERE/release/"
+    (cd "$HERE/release" && sha256sum Quake3-GLES2-*.lha > SHA256SUMS)
+    echo "copied to $HERE/release"
+fi

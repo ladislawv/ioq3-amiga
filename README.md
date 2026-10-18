@@ -49,7 +49,12 @@ than MiniGL (timedemo `four`, 640x480, A1200 with a Pi 4: 80.4 against 61.3 fps)
   (`OGLES2_SDK`, from ogles2's releases).
 - `package_ioq3_ogles2_wsl.sh`: makes the user package `Quake3-GLES2-<build>.lha`
   (the game, `libs/ogles2.library`, the shader compiler `libs/v3dglslc`, the
-  renderer's compiled shaders in `shaders/`, ReadMe, licences).
+  renderer's compiled shaders in `shaders/`, ReadMe, licences). With `dist`
+  it also copies it into `release/`.
+
+**The built package is in [`release/`](release/)** (`Quake3-GLES2-296.lha`,
+with `SHA256SUMS`): the released build, refreshed only when a new build is
+released.
 
 The renderer compiles 109 GLSL programs; their compiled form depends on the
 screen size. The package ships them for 640x480 and 1920x1080; other modes
