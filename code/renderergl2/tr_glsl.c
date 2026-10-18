@@ -669,6 +669,7 @@ static int GLSL_InitGPUShader(shaderProgram_t * program, const char *name,
 	}
 
 	result = GLSL_InitGPUShader2(program, name, attribs, vpCode, fragmentShader ? fpCode : NULL);
+	GLimp_ShaderProgress(); /* ogles2 (code/amiga-gl2): show progress while compiling */
 
 	return result;
 }
